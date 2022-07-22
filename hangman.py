@@ -109,16 +109,21 @@ class Hangman:
                 pass
             else:
                 print(f'{letter} has already been tried')
-
+         
         def ask_user():
-            letter=input("Please Enter a letter: ") #asking the user for a letter 
-            for letter in self.word:
-                pass
-            else:
-                input("Please Enter a letter: ")
+            for letter  in self.word:
+                letter= input("Please enter your letter")    
+
+
+        print(self.word)
+        while self.num_lives > 0:
+            letter=input("Please Enter a letter: ") #asking the user for a letter
+            alpha()
+            already_used()
+            self.letter_list += letter
+            self.check_letter(letter)
 
         
-    
         pass
 
 def play_game(word_list):
