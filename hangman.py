@@ -119,7 +119,7 @@ class Hangman:
             game.check_letter(letter)
     
         pass
-
+a 
 def play_game(word_list):
     # As an aid, part of the code is already provided:
     game = Hangman(word_list)
