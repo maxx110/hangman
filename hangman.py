@@ -4,6 +4,7 @@ The prints have to contain the same text as indicated, don't add any more prints
 or you will get 0 for this assignment.
 '''
 import random
+from re import A
 
 class Hangman:
     '''
@@ -45,6 +46,10 @@ class Hangman:
         self.num_lives=num_lives
         self.word = random.choice(word_list)
         self.letter_list=''
+        self.word_guess_list=''
+        self.word_guess_list_string = ''.join(self.word_guess_list)
+        self.reveal=list(len(self.word)*'_')
+        #self.show= ['_' for letter in self.word]
         # TODO 2: Initialize the attributes as indicated in the docstring
         # TODO 2: Print two message upon initialization:
         # 1. "The mystery word has {len(self.word)} characters" (The number of letters is NOT the UNIQUE number of letters)
@@ -70,15 +75,35 @@ class Hangman:
         # TODO 3: If the letter is not in the word, reduce the number of lives by 1
         # Be careful! A word can contain the same letter more than once. TIP: Take a look at the index() method in the string class
         def letter_in():
-            if letter in self.word:
-                print(f"{letter}",end="")
-                self.letter_list += letter
+            for character in self.word:
+                self.word_guess_list+=('_')
+            
+           
+            if letter in self.word:               
+                for i in range(len(self.word)):
+                    character=self.word[i]
+                    if character==letter:                     
+                        self.word_guess_list[i] = self.word[i]
+                        self.word[i]= '_'
             else:
-                self.num_lives -= 1
-                print("_", end="")
-                print(f'you have {self.num_lives}')
-                self.letter_list += letter
+                    self.num_lives -= 1
+                    print("_", end="")
+                    print(f'you have {self.num_lives}')
 
+        def letter_out():
+            if (letter) in self.word:               
+                for i in range(len(self.word)):
+                    character=self.word[i]
+                    if character==letter:                     
+                        self.reveal[i] = letter
+                        #self.word[i]= '_'
+            else:
+                    self.num_lives -= 1
+                    print("_", end="")
+                    print()
+                    print(f'you have {self.num_lives}')
+
+           
         letter_in()
 
         pass
@@ -116,12 +141,19 @@ class Hangman:
 
 
         print(self.word)
+        for i in self.word:    
+            print("_", end="")
         while self.num_lives > 0:
+            print() #new line
             letter=input("Please Enter a letter: ") #asking the user for a letter
+            letter=letter.lower()
+            print(letter)
+            print()#new line
             alpha()
             already_used()
             self.letter_list += letter
             self.check_letter(letter)
+           
 
         
         pass
