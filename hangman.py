@@ -4,6 +4,7 @@ The prints have to contain the same text as indicated, don't add any more prints
 or you will get 0 for this assignment.
 '''
 import random
+from re import A
 
 class Hangman:
     '''
@@ -45,6 +46,11 @@ class Hangman:
         self.num_lives=num_lives
         self.word = random.choice(word_list)
         self.letter_list=''
+        self.letter_guessed= list(len(self.word)*'_')
+        self.isgameover=False
+       
+        
+        #self.show= ['_' for letter in self.word]
         # TODO 2: Initialize the attributes as indicated in the docstring
         # TODO 2: Print two message upon initialization:
         # 1. "The mystery word has {len(self.word)} characters" (The number of letters is NOT the UNIQUE number of letters)
@@ -70,20 +76,27 @@ class Hangman:
         # TODO 3: If the letter is not in the word, reduce the number of lives by 1
         # Be careful! A word can contain the same letter more than once. TIP: Take a look at the index() method in the string class
         def letter_in():
-            if letter in self.word:
-                print(f"{letter}",end="")
-                self.letter_list += letter
+            if letter in self.word: #if letter is in guessword
+                for i in range(0,len(self.word)): 
+                    character=self.word[i]
+                    if letter== character:
+                        self.letter_guessed[i]=letter
+
             else:
-                self.num_lives -= 1
-                print("_", end="")
-                print(f'you have {self.num_lives}')
-                self.letter_list += letter
+                self.num_lives-=1 #reduce number of lives by 1
+                print(f'You entered the wrong one! you have {self.num_lives} left')
+            win() #Call the win function
+            
+            pass
 
+        def win(): #print congratulation to user
+            if(all('_' != char for char in self.letter_guessed)):
+                print('Congratulation! you won')
+                self.isgameover=True
+                
         letter_in()
-
-        pass
+        print(self.letter_guessed)
         
-       
 
     def ask_letter(self):
         '''
@@ -99,7 +112,7 @@ class Hangman:
         # TODO 3: If the letter is valid, call the check_letter method
        
         def alpha():
-            if len(letter)<2:
+            if len(letter) == 1:
                 pass
             else:
                 print("Please, enter just one character")
@@ -109,15 +122,30 @@ class Hangman:
                 pass
             else:
                 print(f'{letter} has already been tried')
+        def lost():
+            if self.num_lives==0:
+                print(f'You ran out of lives. The word was {self.word}')
+                self.isgameover=True
 
-        while self.num_lives > 0:
-            letter=input("Please Enter a letter: ") #asking the user for a letter 
+          
+
+      
+
+
+        print(self.word)
+       
+        while not self.isgameover:
+            print() #new line
+            letter=input("Please Enter a letter: ") #asking the user for a letter
+            letter=letter.lower()
+            print(letter)
+            print()#new line
             alpha()
             already_used()
-            self.letter_list += letter
-            game= Hangman(word_list)
-            game.check_letter(letter)
-    
+            self.letter_list += letter  
+            self.check_letter(letter)
+            lost()
+            
         pass
 a 
 def play_game(word_list):
