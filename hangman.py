@@ -46,9 +46,10 @@ class Hangman:
         self.num_lives=num_lives
         self.word = random.choice(word_list)
         self.letter_list=''
-        self.word_guess_list=''
-        self.word_guess_list_string = ''.join(self.word_guess_list)
-        self.reveal=list(len(self.word)*'_')
+        self.letter_guessed= list(len(self.word)*'_')
+        self.isgameover=False
+       
+        
         #self.show= ['_' for letter in self.word]
         # TODO 2: Initialize the attributes as indicated in the docstring
         # TODO 2: Print two message upon initialization:
@@ -75,40 +76,27 @@ class Hangman:
         # TODO 3: If the letter is not in the word, reduce the number of lives by 1
         # Be careful! A word can contain the same letter more than once. TIP: Take a look at the index() method in the string class
         def letter_in():
-            for character in self.word:
-                self.word_guess_list+=('_')
+            if letter in self.word: #if letter is in guessword
+                for i in range(0,len(self.word)): 
+                    character=self.word[i]
+                    if letter== character:
+                        self.letter_guessed[i]=letter
+
+            else:
+                self.num_lives-=1 #reduce number of lives by 1
+                print(f'You entered the wrong one! you have {self.num_lives} left')
+            win() #Call the win function
             
-           
-            if letter in self.word:               
-                for i in range(len(self.word)):
-                    character=self.word[i]
-                    if character==letter:                     
-                        self.word_guess_list[i] = self.word[i]
-                        self.word[i]= '_'
-            else:
-                    self.num_lives -= 1
-                    print("_", end="")
-                    print(f'you have {self.num_lives}')
+            pass
 
-        def letter_out():
-            if (letter) in self.word:               
-                for i in range(len(self.word)):
-                    character=self.word[i]
-                    if character==letter:                     
-                        self.reveal[i] = letter
-                        #self.word[i]= '_'
-            else:
-                    self.num_lives -= 1
-                    print("_", end="")
-                    print()
-                    print(f'you have {self.num_lives}')
-
-           
+        def win(): #print congratulation to user
+            if(all('_' != char for char in self.letter_guessed)):
+                print('Congratulation! you won')
+                self.isgameover=True
+                
         letter_in()
-
-        pass
+        print(self.letter_guessed)
         
-       
 
     def ask_letter(self):
         '''
@@ -124,7 +112,7 @@ class Hangman:
         # TODO 3: If the letter is valid, call the check_letter method
        
         def alpha():
-            if len(letter)<2:
+            if len(letter) == 1:
                 pass
             else:
                 print("Please, enter just one character")
@@ -134,16 +122,19 @@ class Hangman:
                 pass
             else:
                 print(f'{letter} has already been tried')
-         
-        def ask_user():
-            for letter  in self.word:
-                letter= input("Please enter your letter")    
+        def lost():
+            if self.num_lives==0:
+                print(f'You ran out of lives. The word was {self.word}')
+                self.isgameover=True
+
+          
+
+      
 
 
         print(self.word)
-        for i in self.word:    
-            print("_", end="")
-        while self.num_lives > 0:
+       
+        while not self.isgameover:
             print() #new line
             letter=input("Please Enter a letter: ") #asking the user for a letter
             letter=letter.lower()
@@ -151,11 +142,10 @@ class Hangman:
             print()#new line
             alpha()
             already_used()
-            self.letter_list += letter
+            self.letter_list += letter  
             self.check_letter(letter)
-           
-
-        
+            lost()
+            
         pass
 
 def play_game(word_list):
